@@ -1,0 +1,32 @@
+{
+  "name": "cse340-course-repo",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/morelyannick/cse340-course-repo#readme",
+  "bugs": {
+    "url": "https://github.com/morelyannick/cse340-course-repo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morelyannick/cse340-course-repo.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "overrides": {
+    "qs": "6.16.0"
+  }
+}
