@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title><%= title %> | CSE 340 Service Network</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/organizations">Organizations</a></li>
-            <li><a href="/projects">Projects</a></li>
-        </ul>
-    </nav>
+    <header class="site-header">
+        <nav class="site-nav container" aria-label="Main navigation">
+            <a class="site-brand" href="/">CSE 340 Service Network</a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-menu">
+                <span aria-hidden="true">☰</span>
+                <span>Menu</span>
+            </button>
+            <ul class="nav-links" id="main-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/organizations">Organizations</a></li>
+                <li><a href="/projects">Projects</a></li>
+                <li><a href="/categories">Categories</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container page-content">
