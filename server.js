@@ -26,28 +26,50 @@ app.set('view engine', 'ejs');
 // Tell Express where to find your templates
 app.set('views', path.join(__dirname, 'src/views'));
 
+// Forward rejected promises and thrown errors to the error middleware
+const wrap = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
 /**
  * Routes
  */
 
-app.get('/', async (req, res) => {
+app.get('/', wrap(async (req, res) => {
   const title = 'Home';
   res.render('home', { title });
-});
+}));
 
-app.get('/organizations', async (req, res) => {
+app.get('/organizations', wrap(async (req, res) => {
   const title = 'Our Partner Organizations';
   res.render('organizations', { title });
-});
+}));
 
-app.get('/projects', async (req, res) => {
+app.get('/projects', wrap(async (req, res) => {
   const title = 'Service Projects';
   res.render('projects', { title });
-});
+}));
 
-app.get('/categories', async (req, res) => {
+app.get('/categories', wrap(async (req, res) => {
   const title = 'Project Categories';
   res.render('categories', { title });
+}));
+
+// Handle requests that do not match an existing route
+app.use((req, res) => {
+  res.status(404).render('404', {
+    title: 'Page Not Found',
+    path: req.originalUrl
+  });
+});
+
+// Handle errors forwarded by routes and middleware
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.status || 500).render('error', {
+    title: 'Server Error',
+    message: NODE_ENV === 'production' ? 'Something went wrong.' : err.message
+  });
 });
 
 app.listen(PORT, () => {
