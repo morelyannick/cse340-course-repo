@@ -3,6 +3,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllProjects } from './src/models/projects.js';
+import { getAllCategories } from './src/models/categories.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -48,13 +50,15 @@ app.get('/organizations', wrap(async (req, res) => {
 }));
 
 app.get('/projects', wrap(async (req, res) => {
+  const projects = await getAllProjects();
   const title = 'Service Projects';
-  res.render('projects', { title });
+  res.render('projects', { title, projects });
 }));
 
 app.get('/categories', wrap(async (req, res) => {
+  const categories = await getAllCategories();
   const title = 'Project Categories';
-  res.render('categories', { title });
+  res.render('categories', { title, categories });
 }));
 
 // Handle requests that do not match an existing route

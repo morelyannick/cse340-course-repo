@@ -4,10 +4,25 @@
     <h1><%= title %></h1>
     <h2>Upcoming Service Projects</h2>
 </section>
-<ul class="project-list">
-    <li class="project-card"><h2>Park Cleanup</h2><p>Join us to clean up local parks and make them beautiful!</p></li>
-    <li class="project-card"><h2>Food Drive</h2><p>Help collect and distribute food to those in need.</p></li>
-    <li class="project-card"><h2>Community Tutoring</h2><p>Volunteer to tutor students in various subjects.</p></li>
-</ul>
+
+<% if (projects.length > 0) { %>
+    <ul class="project-list">
+        <% projects.forEach(project => { %>
+            <li class="project-card">
+                <h2><%= project.project_title %></h2>
+                <p>
+                    <%= new Date(project.project_date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }) %>
+                </p>
+                <p>Organization: <strong><%= project.organization_name %></strong></p>
+            </li>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <p>No service projects are currently available.</p>
+<% } %>
 
 <%- include('partials/footer') %>
