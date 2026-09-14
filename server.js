@@ -39,23 +39,31 @@ const wrap = (fn) => (req, res, next) =>
  */
 
 app.get('/', wrap(async (req, res) => {
+  void req;
+
   const title = 'Home';
   res.render('home', { title });
 }));
 
 app.get('/organizations', wrap(async (req, res) => {
+  void req;
+
   const organizations = await getAllOrganizations();
   const title = 'Our Partner Organizations';
   res.render('organizations', { title, organizations });
 }));
 
 app.get('/projects', wrap(async (req, res) => {
+  void req;
+
   const projects = await getAllProjects();
   const title = 'Service Projects';
   res.render('projects', { title, projects });
 }));
 
 app.get('/categories', wrap(async (req, res) => {
+  void req;
+
   const categories = await getAllCategories();
   const title = 'Project Categories';
   res.render('categories', { title, categories });
@@ -71,6 +79,9 @@ app.use((req, res) => {
 
 // Handle errors forwarded by routes and middleware
 app.use((err, req, res, next) => {
+  void req;
+  void next;
+
   console.error(err);
 
   res.status(err.status || 500).render('error', {
@@ -79,12 +90,22 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, async () => {
+const startServer = async () => {
   try {
     await testConnection();
-    console.log(`Server is running at http://127.0.0.1:${PORT}`);
-    console.log(`Environment: ${NODE_ENV}`);
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running at http://127.0.0.1:${PORT}`);
+      console.log(`Environment: ${NODE_ENV}`);
+    });
+
+    server.on('error', (error) => {
+      console.error(`Unable to start server on port ${PORT}:`, error.message);
+      process.exitCode = 1;
+    });
   } catch (error) {
     console.error('Error connecting to the database:', error);
+    process.exitCode = 1;
   }
-});
+};
+
+startServer();

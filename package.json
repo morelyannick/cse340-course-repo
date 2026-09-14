@@ -16,7 +16,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate:project-schema": "node --env-file=.env scripts/align-project-schema.js",
+    "migrate:project-location": "node --env-file=.env scripts/apply-project-location-migration.js",
+    "test": "node --test",
     "start": "node server.js"
   },
   "dependencies": {
