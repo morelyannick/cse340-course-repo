@@ -44,6 +44,7 @@ VALUES
 CREATE TABLE public.project (
     project_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     project_title VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
     date DATE NOT NULL,
     location VARCHAR(150) NOT NULL,
     organization_id INTEGER NOT NULL REFERENCES public.organization (organization_id)

@@ -18,6 +18,7 @@
     "dev": "nodemon",
     "migrate:project-schema": "node --env-file=.env scripts/align-project-schema.js",
     "migrate:project-location": "node --env-file=.env scripts/apply-project-location-migration.js",
+    "migrate:project-description": "node --env-file=.env scripts/apply-project-description-migration.js",
     "test": "node --test",
     "start": "node server.js"
   },

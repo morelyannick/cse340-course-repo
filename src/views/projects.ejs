@@ -9,7 +9,11 @@
     <ul class="project-list">
         <% projects.forEach(project => { %>
             <li class="project-card">
-                <h2><%= project.project_title %></h2>
+                <h2>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+                </h2>
                 <p>
                     <%= new Date(project.date).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -21,7 +25,14 @@
                 <% if (project.location) { %>
                     <p>Location: <strong><%= project.location %></strong></p>
                 <% } %>
-                <p>Organization: <strong><%= project.organization_name %></strong></p>
+                <p>
+                    Organization:
+                    <strong>
+                        <a href="/organization/<%= project.organization_id %>">
+                            <%= project.organization_name %>
+                        </a>
+                    </strong>
+                </p>
             </li>
         <% }); %>
     </ul>

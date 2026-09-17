@@ -4,7 +4,10 @@ import {
   showOrganizationsPage,
   showOrganizationPage
 } from './controllers/organizations.js';
-import { showProjectsPage } from './controllers/projects.js';
+import {
+  showProjectsPage,
+  showProjectDetailsPage
+} from './controllers/projects.js';
 import { showCategoriesPage } from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
 
@@ -17,6 +20,7 @@ router.get('/', wrap(showHomePage));
 router.get('/organizations', wrap(showOrganizationsPage));
 router.get('/organization/:id', wrap(showOrganizationPage));
 router.get('/projects', wrap(showProjectsPage));
+router.get('/project/:id', wrap(showProjectDetailsPage));
 router.get('/categories', wrap(showCategoriesPage));
 router.get('/test-error', testErrorPage);
 
