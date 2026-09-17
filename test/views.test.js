@@ -11,10 +11,20 @@ const baseData = {
   projects: [],
   categories: [],
   message: 'Test error',
-  path: '/missing-page'
+  path: '/missing-page',
+  NODE_ENV: 'development',
+  error: 'Test error',
+  stack: 'Test stack'
 };
 
-for (const view of ['home', 'organizations', 'projects', 'categories', '404', 'error']) {
+for (const view of [
+  'home',
+  'organizations',
+  'projects',
+  'categories',
+  'errors/404',
+  'errors/500'
+]) {
   test(`${view} view renders`, async () => {
     const filename = path.join(viewsDirectory, `${view}.ejs`);
     const template = await readFile(filename, 'utf8');

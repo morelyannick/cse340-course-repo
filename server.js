@@ -2,9 +2,8 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import routes from './src/routes.js';
+import { globalErrorHandler, notFound } from './src/controllers/errors.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -30,65 +29,30 @@ app.set('view engine', 'ejs');
 // Tell Express where to find your templates
 app.set('views', path.join(__dirname, 'src/views'));
 
-// Forward rejected promises and thrown errors to the error middleware
-const wrap = (fn) => (req, res, next) =>
-  Promise.resolve(fn(req, res, next)).catch(next);
+// Middleware to log all incoming requests
+app.use((req, res, next) => {
+  if (NODE_ENV === 'development') {
+    console.log(`${req.method} ${req.url}`);
+  }
+  next();
+});
+
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+  next();
+});
 
 /**
  * Routes
  */
+app.use(routes);
 
-app.get('/', wrap(async (req, res) => {
-  void req;
+// Catch-all route for 404 errors
+app.use(notFound);
 
-  const title = 'Home';
-  res.render('home', { title });
-}));
-
-app.get('/organizations', wrap(async (req, res) => {
-  void req;
-
-  const organizations = await getAllOrganizations();
-  const title = 'Our Partner Organizations';
-  res.render('organizations', { title, organizations });
-}));
-
-app.get('/projects', wrap(async (req, res) => {
-  void req;
-
-  const projects = await getAllProjects();
-  const title = 'Service Projects';
-  res.render('projects', { title, projects });
-}));
-
-app.get('/categories', wrap(async (req, res) => {
-  void req;
-
-  const categories = await getAllCategories();
-  const title = 'Project Categories';
-  res.render('categories', { title, categories });
-}));
-
-// Handle requests that do not match an existing route
-app.use((req, res) => {
-  res.status(404).render('404', {
-    title: 'Page Not Found',
-    path: req.originalUrl
-  });
-});
-
-// Handle errors forwarded by routes and middleware
-app.use((err, req, res, next) => {
-  void req;
-  void next;
-
-  console.error(err);
-
-  res.status(err.status || 500).render('error', {
-    title: 'Server Error',
-    message: NODE_ENV === 'production' ? 'Something went wrong.' : err.message
-  });
-});
+// Global error handler
+app.use(globalErrorHandler);
 
 const startServer = async () => {
   try {
