@@ -8,7 +8,11 @@
 <% if (categories.length > 0) { %>
     <ul class="project-list" aria-label="Service project categories">
         <% categories.forEach(category => { %>
-            <li class="project-card"><%= category.category_name %></li>
+            <li class="project-card">
+                <a href="/category/<%= category.category_id %>">
+                    <%= category.category_name %>
+                </a>
+            </li>
         <% }); %>
     </ul>
 <% } else { %>

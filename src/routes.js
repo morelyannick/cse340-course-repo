@@ -8,7 +8,10 @@ import {
   showProjectsPage,
   showProjectDetailsPage
 } from './controllers/projects.js';
-import { showCategoriesPage } from './controllers/categories.js';
+import {
+  showCategoriesPage,
+  showCategoryDetailsPage
+} from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
 
 const router = express.Router();
@@ -22,6 +25,7 @@ router.get('/organization/:id', wrap(showOrganizationPage));
 router.get('/projects', wrap(showProjectsPage));
 router.get('/project/:id', wrap(showProjectDetailsPage));
 router.get('/categories', wrap(showCategoriesPage));
+router.get('/category/:id', wrap(showCategoryDetailsPage));
 router.get('/test-error', testErrorPage);
 
 export default router;

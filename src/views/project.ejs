@@ -28,6 +28,21 @@
             </a>
         </strong>
     </p>
+
+    <h2>Categories</h2>
+    <% if (categories.length > 0) { %>
+        <ul class="category-tags" aria-label="Project categories">
+            <% categories.forEach(category => { %>
+                <li>
+                    <a href="/category/<%= category.category_id %>">
+                        <%= category.category_name %>
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No categories are currently assigned to this project.</p>
+    <% } %>
 </main>
 
 <%- include('partials/footer') %>
