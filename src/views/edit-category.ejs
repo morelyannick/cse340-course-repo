@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<section aria-labelledby="page-title">
+    <h1 id="page-title"><%= title %></h1>
+
+    <form action="/edit-category/<%= category.category_id %>" method="POST">
+        <div class="form-group">
+            <label for="categoryName">Category Name</label>
+            <input
+                type="text"
+                id="categoryName"
+                name="categoryName"
+                value="<%= category.category_name %>"
+                maxlength="100"
+                required
+            />
+        </div>
+
+        <button type="submit">Update Category</button>
+    </form>
+</section>
+
+<%- include('partials/footer') %>
