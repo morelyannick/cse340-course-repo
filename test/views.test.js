@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import ejs from 'ejs';
+import flash from '../src/middleware/flash.js';
 
 const viewsDirectory = path.resolve('src/views');
 const baseData = {
@@ -20,6 +21,7 @@ const baseData = {
 for (const view of [
   'home',
   'organizations',
+  'new-organization',
   'projects',
   'categories',
   'errors/404',
@@ -49,4 +51,26 @@ test('projects view renders a project with an optional location', async () => {
   }, { filename });
 
   assert.match(html, /Riverside Park/);
+});
+
+test('flash middleware returns flattened message objects for templates', () => {
+  const req = { session: {} };
+  const res = { locals: {} };
+
+  flash(req, res, () => {});
+  req.flash('success', 'Created successfully');
+  req.flash('error', 'This failed');
+
+  const messages = req.flash();
+
+  assert.deepEqual(messages, [
+    { type: 'success', message: 'Created successfully' },
+    { type: 'error', message: 'This failed' }
+  ]);
+  assert.deepEqual(req.session.flash, {
+    success: [],
+    error: [],
+    warning: [],
+    info: []
+  });
 });

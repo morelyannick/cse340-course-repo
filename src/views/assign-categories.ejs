@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<section aria-labelledby="page-title">
+    <h1 id="page-title"><%= projectDetails.title %></h1>
+    <h2><%= title %></h2>
+
+    <form action="/assign-categories/<%= projectId %>" method="POST">
+        <fieldset class="form-group">
+            <legend>Choose categories for this project</legend>
+            <% if (categories.length > 0) { %>
+                <% categories.forEach((category) => { %>
+                    <div>
+                        <input
+                            type="checkbox"
+                            id="category-<%= category.category_id %>"
+                            name="categoryIds"
+                            value="<%= category.category_id %>"
+                            <%= assignedCategories.some((assigned) => assigned.category_id === category.category_id) ? 'checked' : '' %>
+                        />
+                        <label for="category-<%= category.category_id %>"><%= category.category_name %></label>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No categories are available.</p>
+            <% } %>
+        </fieldset>
+
+        <button type="submit">Update Categories</button>
+    </form>
+</section>
+
+<%- include('partials/footer') %>

@@ -37,6 +37,16 @@ h2 { font-size: clamp(1.3rem, 3vw, 2rem); }
 .organization-card img { height: 4.5rem; object-fit: contain; width: 4.5rem; }
 .organization-card strong, .organization-card span { display: block; }
 .organization-card span { color: var(--muted); }
+.flash-messages { margin-bottom: 1rem; margin-top: 1rem; }
+.flash-message { border: 1px solid transparent; border-radius: 0.5rem; margin-bottom: 0.75rem; padding: 0.75rem 1rem; }
+.flash-message.success { background: #ecfdf5; border-color: #34d399; color: #065f46; }
+.flash-message.error { background: #fef2f2; border-color: #f87171; color: #991b1b; }
+.flash-message.warning { background: #fff7ed; border-color: #fbbf24; color: #92400e; }
+.flash-messages { margin-bottom: 1rem; margin-top: 1rem; }
+.flash-message { border: 1px solid transparent; border-radius: 0.5rem; margin-bottom: 0.75rem; padding: 0.75rem 1rem; }
+.flash-message.success { background: #ecfdf5; border-color: #34d399; color: #065f46; }
+.flash-message.error { background: #fef2f2; border-color: #f87171; color: #991b1b; }
+.flash-message.warning { background: #fff7ed; border-color: #fbbf24; color: #92400e; }
 .site-footer { background: var(--primary-dark); color: #fff; padding: 1.5rem 0; }
 .footer-content { text-align: center; }
 .footer-content p { margin: 0.25rem 0; }

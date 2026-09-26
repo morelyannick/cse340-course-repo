@@ -1,8 +1,10 @@
 import express from 'express';
+import session from 'express-session';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import routes from './src/routes.js';
+import flash from './src/middleware/flash.js';
 import { globalErrorHandler, notFound } from './src/controllers/errors.js';
 
 // Define the application environment
@@ -19,6 +21,18 @@ const __dirname = path.dirname(__filename);
 /**
  * Configure Express middleware
  */
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'development-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }
+}));
+app.use(flash);
+
+// Allow Express to receive and process common POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));

@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<section aria-labelledby="page-title">
+    <h1 id="page-title"><%= title %></h1>
+
+    <form action="/edit-project/<%= project.project_id %>" method="POST">
+        <div class="form-group">
+            <label for="title">Project Title</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="<%= project.title %>"
+                minlength="3"
+                maxlength="150"
+                required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" maxlength="999" required><%= project.description %></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                value="<%= project.location %>"
+                maxlength="150"
+                required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input
+                type="date"
+                id="date"
+                name="date"
+                value="<%= String(project.date).slice(0, 10) %>"
+                required
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="organizationId">Organization</label>
+            <select id="organizationId" name="organizationId" required>
+                <% organizations.forEach((organization) => { %>
+                    <option
+                        value="<%= organization.organization_id %>"
+                        <%= String(project.organization_id) === String(organization.organization_id) ? 'selected' : '' %>
+                    ><%= organization.name %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <button type="submit">Update Project</button>
+    </form>
+</section>
+
+<%- include('partials/footer') %>

@@ -22,4 +22,14 @@
             </ul>
         </nav>
     </header>
+
+    <% const flashMessages = typeof flash === 'function' ? flash() : []; %>
+    <% if (flashMessages.length) { %>
+        <div class="flash-messages container">
+            <% flashMessages.forEach(({ type, message }) => { %>
+                <div class="flash-message <%= type %>"><%= message %></div>
+            <% }); %>
+        </div>
+    <% } %>
+
     <main class="container page-content">
