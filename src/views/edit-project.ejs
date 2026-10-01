@@ -40,7 +40,9 @@
                 type="date"
                 id="date"
                 name="date"
-                value="<%= String(project.date).slice(0, 10) %>"
+                value="<%= project.date instanceof Date
+                    ? `${project.date.getFullYear()}-${String(project.date.getMonth() + 1).padStart(2, '0')}-${String(project.date.getDate()).padStart(2, '0')}`
+                    : String(project.date ?? '').slice(0, 10) %>"
                 required
             />
         </div>
