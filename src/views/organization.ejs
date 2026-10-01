@@ -11,11 +11,13 @@
 
     <p><%= organization.description %></p>
 
-    <p>
-        <a href="/edit-organization/<%= organization.organization_id %>">
-            Edit Organization
-        </a>
-    </p>
+    <% if (typeof user !== 'undefined' && user && user.role_name === 'admin') { %>
+        <p>
+            <a href="/edit-organization/<%= organization.organization_id %>">
+                Edit Organization
+            </a>
+        </p>
+    <% } %>
 
     <h2>Service Projects</h2>
 

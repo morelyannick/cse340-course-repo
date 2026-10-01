@@ -4,7 +4,9 @@
     <h1><%= title %></h1>
 
     <h2><%= project.title %></h2>
-    <p><a href="/edit-project/<%= project.project_id %>">Edit Service Project</a></p>
+    <% if (typeof user !== 'undefined' && user && user.role_name === 'admin') { %>
+        <p><a href="/edit-project/<%= project.project_id %>">Edit Service Project</a></p>
+    <% } %>
 
     <% if (project.description) { %>
         <p><%= project.description %></p>
@@ -31,7 +33,9 @@
     </p>
 
     <h2>Categories</h2>
-    <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>
+    <% if (typeof user !== 'undefined' && user && user.role_name === 'admin') { %>
+        <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>
+    <% } %>
     <% if (categories.length > 0) { %>
         <ul class="category-tags" aria-label="Project categories">
             <% categories.forEach(category => { %>

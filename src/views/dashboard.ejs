@@ -5,6 +5,9 @@
     <h2>Dashboard</h2>
     <p>Name: <%= name %></p>
     <p>Email: <%= email %></p>
+    <% if (user && user.role_name === 'admin') { %>
+        <p><a href="/users">Manage Users</a></p>
+    <% } %>
 </main>
 
 <%- include('partials/footer') %>

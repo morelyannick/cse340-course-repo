@@ -3,7 +3,9 @@
 <section class="page-hero">
     <h1><%= title %></h1>
     <p>Browse service project categories.</p>
-    <p><a href="/new-category">Add a New Category</a></p>
+    <% if (typeof user !== 'undefined' && user && user.role_name === 'admin') { %>
+        <p><a href="/new-category">Add a New Category</a></p>
+    <% } %>
 </section>
 
 <% if (categories.length > 0) { %>

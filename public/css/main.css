@@ -50,6 +50,9 @@ h2 { font-size: clamp(1.3rem, 3vw, 2rem); }
 .site-footer { background: var(--primary-dark); color: #fff; padding: 1.5rem 0; }
 .footer-content { text-align: center; }
 .footer-content p { margin: 0.25rem 0; }
+.user-table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
+.user-table th, .user-table td { border: 1px solid var(--border); padding: 0.5rem; text-align: left; }
+.user-table th { background: var(--primary); color: #fff; }
 
 @media (min-width: 48rem) {
   .container { padding-left: 2rem; padding-right: 2rem; }

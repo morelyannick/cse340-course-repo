@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+
+<main>
+    <section class="page-hero">
+        <h1><%= title %></h1>
+        <p>Review registered users and their assigned roles.</p>
+    </section>
+
+    <% if (users.length > 0) { %>
+        <table class="user-table" aria-label="Registered users">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.role_name %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No users are currently available.</p>
+    <% } %>
+</main>
+
+<%- include('partials/footer') %>

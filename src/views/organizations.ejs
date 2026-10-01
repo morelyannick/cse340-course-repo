@@ -30,6 +30,8 @@
     <p>No partner organizations are currently available.</p>
 <% } %>
 
-<p><a href="/new-organization">Add a new organization</a></p>
+<% if (typeof user !== 'undefined' && user && user.role_name === 'admin') { %>
+    <p><a href="/new-organization">Add a new organization</a></p>
+<% } %>
 
 <%- include('partials/footer') %>

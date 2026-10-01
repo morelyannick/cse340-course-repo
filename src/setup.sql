@@ -189,3 +189,10 @@ JOIN roles r ON u.role_id = r.role_id;
 -- Delete the test user
 DELETE FROM users WHERE email = 'test@example.com';
 
+
+UPDATE users 
+SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin') 
+WHERE email = 'gueiyannick92@gmail.com';
+
+SELECT * FROM users;
+SELECT * FROM roles;

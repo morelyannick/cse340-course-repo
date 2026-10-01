@@ -53,6 +53,36 @@ test('projects view renders a project with an optional location', async () => {
   assert.match(html, /Riverside Park/);
 });
 
+test('users view renders names, emails, and roles', async () => {
+  const filename = path.join(viewsDirectory, 'users.ejs');
+  const template = await readFile(filename, 'utf8');
+  const html = ejs.render(template, {
+    ...baseData,
+    users: [{ name: 'Admin', email: 'admin@example.com', role_name: 'admin' }]
+  }, { filename });
+
+  assert.match(html, /Admin/);
+  assert.match(html, /admin@example\.com/);
+  assert.match(html, />admin</);
+});
+
+test('dashboard only shows the users link to admins', async () => {
+  const filename = path.join(viewsDirectory, 'dashboard.ejs');
+  const template = await readFile(filename, 'utf8');
+  const commonData = { ...baseData, name: 'Test User', email: 'user@example.com' };
+  const adminHtml = ejs.render(template, {
+    ...commonData,
+    user: { role_name: 'admin' }
+  }, { filename });
+  const regularUserHtml = ejs.render(template, {
+    ...commonData,
+    user: { role_name: 'user' }
+  }, { filename });
+
+  assert.match(adminHtml, /href="\/users"/);
+  assert.doesNotMatch(regularUserHtml, /href="\/users"/);
+});
+
 test('flash middleware returns flattened message objects for templates', () => {
   const req = { session: {} };
   const res = { locals: {} };

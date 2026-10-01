@@ -27,13 +27,26 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
     const query = `
-        SELECT user_id, name, email, password_hash, role_id
-        FROM public.users
-        WHERE email = $1
+        SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name
+        FROM public.users u
+        JOIN public.roles r ON u.role_id = r.role_id
+        WHERE u.email = $1
     `;
     const result = await db.query(query, [email]);
 
     return result.rows[0] ?? null;
+};
+
+const getAllUsers = async () => {
+    const query = `
+        SELECT u.user_id, u.name, u.email, r.role_name
+        FROM public.users u
+        JOIN public.roles r ON u.role_id = r.role_id
+        ORDER BY u.name, u.email
+    `;
+    const result = await db.query(query);
+
+    return result.rows;
 };
 
 const verifyPassword = (password, passwordHash) =>
@@ -50,4 +63,4 @@ const authenticateUser = async (email, password) => {
     return authenticatedUser;
 };
 
-export { createUser, authenticateUser };
+export { createUser, authenticateUser, getAllUsers };
