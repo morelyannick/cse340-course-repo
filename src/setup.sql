@@ -192,7 +192,22 @@ DELETE FROM users WHERE email = 'test@example.com';
 
 UPDATE users 
 SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin') 
-WHERE email = 'gueiyannick92@gmail.com';
+WHERE email = 'gueiyannick92@gmail.com' or email = 'admin@example.com' or email = 'morel@gmail.com';
 
 SELECT * FROM users;
 SELECT * FROM roles;
+
+
+-- Make sure the 'admin' role exists
+SELECT * FROM roles;
+
+-- Update multiple users to admin role
+UPDATE users
+SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
+WHERE email IN ('admin@example.com', 'gueiyannick92@gmail.com');
+
+-- Verify the update
+SELECT u.user_id, u.email, r.role_name
+FROM users u
+JOIN roles r ON u.role_id = r.role_id
+WHERE u.email IN ('admin@example.com', 'gueiyannick92@gmail.com');

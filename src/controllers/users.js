@@ -44,7 +44,7 @@ export const processUserRegistrationForm = async (req, res) => {
     await createUser(name, email, passwordHash);
 
     req.flash('success', 'Registration successful! Please log in.');
-    return res.redirect('/dashboard');
+    return res.redirect('/login');
   } catch (error) {
     if (error.code === '23505') {
       req.flash('error', 'An account with this email already exists.');
