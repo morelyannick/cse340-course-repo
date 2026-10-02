@@ -198,8 +198,18 @@ UPDATE users
 SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
 WHERE email IN ('admin@example.com', 'gueiyannick92@gmail.com');
 
+UPDATE users
+SET role_id = (SELECT role_id FROM roles WHERE role_name = 'user')
+WHERE email = 'morel@gmail.com';
+
+
 -- Verify the update
 SELECT u.user_id, u.email, r.role_name
 FROM users u
 JOIN roles r ON u.role_id = r.role_id
 WHERE u.email IN ('admin@example.com', 'gueiyannick92@gmail.com');
+
+SELECT u.user_id, u.email, r.role_name
+FROM users u
+JOIN roles r ON u.role_id = r.role_id
+WHERE u.email = 'morel@gmail.com';
