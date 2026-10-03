@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { requireRole } from '../src/controllers/users.js';
+import { validationResult } from 'express-validator';
+import {
+  requireRole,
+  userRegistrationValidation
+} from '../src/controllers/users.js';
 
 const createResponse = () => ({
   redirectedTo: null,
@@ -58,4 +62,20 @@ test('requireRole redirects a logged-out visitor to login', () => {
   assert.equal(nextCalled, false);
   assert.equal(res.redirectedTo, '/login');
   assert.equal(req.flashedMessages[0].type, 'error');
+});
+
+test('registration accepts the required admin test credentials', async () => {
+  const req = {
+    body: {
+      name: 'admin',
+      email: 'admin@example.com',
+      password: 'cse340!'
+    }
+  };
+
+  await Promise.all(
+    userRegistrationValidation.map((validator) => validator.run(req))
+  );
+
+  assert.deepEqual(validationResult(req).array(), []);
 });

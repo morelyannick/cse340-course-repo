@@ -21,8 +21,8 @@ export const userRegistrationValidation = [
   body('password')
     .isString()
     .withMessage('Password is required.')
-    .isLength({ min: 8, max: 72 })
-    .withMessage('Password must be between 8 and 72 characters.')
+    .isLength({ min: 7, max: 72 })
+    .withMessage('Password must be between 7 and 72 characters.')
 ];
 
 export const showUserRegistrationForm = (req, res) => {

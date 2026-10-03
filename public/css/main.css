@@ -53,6 +53,7 @@ h2 { font-size: clamp(1.3rem, 3vw, 2rem); }
 .user-table { border-collapse: collapse; margin: 1rem 0; width: 100%; }
 .user-table th, .user-table td { border: 1px solid var(--border); padding: 0.5rem; text-align: left; }
 .user-table th { background: var(--primary); color: #fff; }
+.dashboard-info { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; box-shadow: var(--shadow); padding: 1rem; margin-bottom: 1rem; }
 
 @media (min-width: 48rem) {
   .container { padding-left: 2rem; padding-right: 2rem; }

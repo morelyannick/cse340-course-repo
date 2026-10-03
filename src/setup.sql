@@ -177,39 +177,79 @@ CREATE TABLE users (
     role_id INTEGER REFERENCES roles(role_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- Insert a test user
-INSERT INTO users (name, email, password_hash, role_id) 
-VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1);
 
--- Join users and roles to see complete information
-SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
-FROM users u
-JOIN roles r ON u.role_id = r.role_id;
+-- ============================================================
+-- ADMIN USER 
+-- ============================================================
 
--- Delete the test user
-DELETE FROM users WHERE email = 'test@example.com';
-
-
--- Make sure the 'admin' role exists
-SELECT * FROM roles;
-
--- Update multiple users to admin role
-UPDATE users
-SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
-WHERE email IN ('admin@example.com', 'gueiyannick92@gmail.com');
-
-UPDATE users
-SET role_id = (SELECT role_id FROM roles WHERE role_name = 'user')
-WHERE email = 'morel@gmail.com';
+INSERT INTO public.users (
+    name,
+    email,
+    password_hash,
+    role_id
+)
+VALUES (
+    'Admin User',
+    'admin@example.com',
+    '$2b$10$PPzAP6BlmWlq6S2WP.qiUOsBO1.rUGcL461Pam.2lEgCKgqyKlJCO',
+    (
+        SELECT role_id
+        FROM public.roles
+        WHERE role_name = 'admin'
+    )
+);
 
 
--- Verify the update
-SELECT u.user_id, u.email, r.role_name
-FROM users u
-JOIN roles r ON u.role_id = r.role_id
-WHERE u.email IN ('admin@example.com', 'gueiyannick92@gmail.com');
+-- ============================================================
+-- VERIFY ALL USERS
+-- ============================================================
 
-SELECT u.user_id, u.email, r.role_name
-FROM users u
-JOIN roles r ON u.role_id = r.role_id
-WHERE u.email = 'morel@gmail.com';
+SELECT *
+FROM public.users;
+
+
+-- ============================================================
+-- VERIFY USERS WITH THEIR ROLES
+-- ============================================================
+
+SELECT
+    u.user_id,
+    u.name,
+    u.email,
+    r.role_name,
+    r.role_description,
+    u.created_at
+FROM public.users AS u
+JOIN public.roles AS r
+    ON u.role_id = r.role_id
+ORDER BY u.user_id;
+
+
+-- ============================================================
+-- VERIFY ADMIN USERS ONLY
+-- ============================================================
+
+SELECT
+    u.user_id,
+    u.name,
+    u.email,
+    r.role_name
+FROM public.users AS u
+JOIN public.roles AS r
+    ON u.role_id = r.role_id
+WHERE r.role_name = 'admin';
+
+
+-- ============================================================
+-- VERIFY NORMAL USERS
+-- ============================================================
+
+SELECT
+    u.user_id,
+    u.name,
+    u.email,
+    r.role_name
+FROM public.users AS u
+JOIN public.roles AS r
+    ON u.role_id = r.role_id
+WHERE r.role_name = 'user';
