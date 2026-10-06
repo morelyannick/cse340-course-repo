@@ -6,6 +6,10 @@ import {
 } from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
+import {
+  addVolunteerToProject,
+  removeVolunteerFromProject
+} from '../models/projectvolunteers.js';
 import { body, validationResult } from 'express-validator';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -56,6 +60,52 @@ export const showProjectDetailsPage = async (req, res, next) => {
   const categories = await getCategoriesByProjectId(req.params.id);
   const title = project.title;
   res.render('project', { title, project, categories });
+};
+
+export const processVolunteerSignup = async (req, res) => {
+  const projectId = Number(req.params.id);
+  const projectPath = `/project/${encodeURIComponent(req.params.id)}`;
+
+  if (!Number.isSafeInteger(projectId) || projectId < 1) {
+    req.flash('error', 'Invalid project.');
+    return res.redirect('/projects');
+  }
+
+  const project = await getProjectDetails(projectId);
+  if (!project) {
+    req.flash('error', 'That project could not be found.');
+    return res.redirect('/projects');
+  }
+
+  const association = await addVolunteerToProject(req.session.user.user_id, projectId);
+  req.flash(
+    association ? 'success' : 'info',
+    association ? 'You signed up for this project.' : 'You are already signed up for this project.'
+  );
+  return res.redirect(projectPath);
+};
+
+export const processVolunteerWithdrawal = async (req, res) => {
+  const projectId = Number(req.params.id);
+  const projectPath = `/project/${encodeURIComponent(req.params.id)}`;
+
+  if (!Number.isSafeInteger(projectId) || projectId < 1) {
+    req.flash('error', 'Invalid project.');
+    return res.redirect('/projects');
+  }
+
+  const project = await getProjectDetails(projectId);
+  if (!project) {
+    req.flash('error', 'That project could not be found.');
+    return res.redirect('/projects');
+  }
+
+  const association = await removeVolunteerFromProject(req.session.user.user_id, projectId);
+  req.flash(
+    association ? 'success' : 'info',
+    association ? 'You withdrew from this project.' : 'You were not signed up for this project.'
+  );
+  return res.redirect(req.body.returnTo === 'dashboard' ? '/dashboard' : projectPath);
 };
 
 export const showNewProjectForm = async (req, res) => {

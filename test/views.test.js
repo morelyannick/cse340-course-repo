@@ -83,6 +83,46 @@ test('dashboard only shows the users link to admins', async () => {
   assert.doesNotMatch(regularUserHtml, /href="\/users"/);
 });
 
+test('dashboard lists the user\'s volunteer projects with a withdrawal form', async () => {
+  const filename = path.join(viewsDirectory, 'dashboard.ejs');
+  const template = await readFile(filename, 'utf8');
+  const html = ejs.render(template, {
+    ...baseData,
+    name: 'Test User',
+    email: 'user@example.com',
+    user: { role_name: 'user' },
+    projects: [{
+      project_id: 12,
+      project_title: 'Park Cleanup',
+      date: '2026-10-10',
+      location: 'Riverside Park',
+      organization_name: 'UnityServe Volunteers'
+    }]
+  }, { filename });
+
+  assert.match(html, /Park Cleanup/);
+  assert.match(html, /Riverside Park/);
+  assert.match(html, /UnityServe Volunteers/);
+  assert.match(html, /action="\/project\/12\/withdraw" method="post"/);
+  assert.match(html, /name="returnTo" value="dashboard"/);
+  assert.match(html, />Withdraw</);
+});
+
+test('dashboard shows an empty state when the user has no volunteer projects', async () => {
+  const filename = path.join(viewsDirectory, 'dashboard.ejs');
+  const template = await readFile(filename, 'utf8');
+  const html = ejs.render(template, {
+    ...baseData,
+    name: 'Test User',
+    email: 'user@example.com',
+    user: { role_name: 'user' },
+    projects: []
+  }, { filename });
+
+  assert.match(html, /not signed up for any volunteer projects/i);
+  assert.doesNotMatch(html, /\/withdraw/);
+});
+
 test('flash middleware returns flattened message objects for templates', () => {
   const req = { session: {} };
   const res = { locals: {} };

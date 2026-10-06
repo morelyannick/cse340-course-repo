@@ -32,6 +32,20 @@
         </strong>
     </p>
 
+    <section aria-labelledby="volunteer-heading">
+        <h2 id="volunteer-heading">Volunteer for this project</h2>
+        <% if (typeof user !== 'undefined' && user) { %>
+            <form action="/project/<%= project.project_id %>/volunteer" method="post">
+                <button type="submit">Sign up</button>
+            </form>
+            <form action="/project/<%= project.project_id %>/withdraw" method="post">
+                <button type="submit">Withdraw</button>
+            </form>
+        <% } else { %>
+            <p><a href="/login">Log in</a> to sign up or withdraw from this project.</p>
+        <% } %>
+    </section>
+
     <h2>Categories</h2>
     <% if (typeof user !== 'undefined' && user && user.role_name === 'admin') { %>
         <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>

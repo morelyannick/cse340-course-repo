@@ -253,3 +253,44 @@ FROM public.users AS u
 JOIN public.roles AS r
     ON u.role_id = r.role_id
 WHERE r.role_name = 'user';
+
+-- ========================================
+-- Volunteers table (many-to-many between users and projects)
+-- ========================================
+DROP TABLE IF EXISTS public.project_volunteers CASCADE;
+
+CREATE TABLE public.project_volunteers (
+    project_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (project_id, user_id),
+    CONSTRAINT project_volunteers_project_fk
+        FOREIGN KEY (project_id)
+        REFERENCES public.project (project_id)
+        ON DELETE CASCADE,
+    CONSTRAINT project_volunteers_user_fk
+        FOREIGN KEY (user_id)
+        REFERENCES public.users (user_id)
+        ON DELETE CASCADE
+);
+
+-- ============================================================
+-- SAMPLE ASSOCIATIONS (optional, for testing)
+-- ============================================================
+
+-- Example: assign Admin User to Park Cleanup project
+INSERT INTO public.project_volunteers (project_id, user_id)
+VALUES (
+    (SELECT project_id FROM public.project WHERE project_title = 'Park Cleanup'),
+    (SELECT user_id FROM public.users WHERE email = 'admin@example.com')
+)
+ON CONFLICT (project_id, user_id) DO NOTHING;
+
+-- Verify associations
+SELECT
+    p.project_title,
+    u.name,
+    u.email
+FROM public.project_volunteers pv
+JOIN public.project p ON pv.project_id = p.project_id
+JOIN public.users u ON pv.user_id = u.user_id
+ORDER BY p.project_title, u.name;

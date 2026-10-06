@@ -10,6 +10,41 @@
     <% if (user && user.role_name === 'admin') { %>
         <p><a href="/users">Manage Users</a></p>
     <% } %>
+
+    <% const dashboardProjects = typeof projects !== 'undefined' ? projects : []; %>
+    <section aria-labelledby="volunteer-projects-heading">
+        <h2 id="volunteer-projects-heading">My Volunteer Projects</h2>
+        <% if (dashboardProjects.length > 0) { %>
+            <ul class="dashboard-projects">
+                <% dashboardProjects.forEach((project) => { %>
+                    <li>
+                        <h3>
+                            <a href="/project/<%= project.project_id %>">
+                                <%= project.project_title %>
+                            </a>
+                        </h3>
+                        <p>
+                            Date:
+                            <%= new Date(project.date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                timeZone: 'UTC'
+                            }) %>
+                        </p>
+                        <p>Location: <%= project.location %></p>
+                        <p>Organization: <%= project.organization_name %></p>
+                        <form action="/project/<%= project.project_id %>/withdraw" method="post">
+                            <input type="hidden" name="returnTo" value="dashboard">
+                            <button type="submit">Withdraw</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>You are not signed up for any volunteer projects.</p>
+        <% } %>
+    </section>
 </main>
 
 <%- include('partials/footer') %>
